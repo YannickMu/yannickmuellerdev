@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Login</title>
+        <meta name="author" content="Yannick Müller" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link href="/static/style.css" rel="stylesheet" />
+        <link
+            rel="icon"
+            type="image/x-icon"
+            href="/static/yannickmueller.ico"
+        />
+    </head>
+
+    <body>
+        <div id="Container">
+            <form class="form" action="" method="POST">
+                <div id="login-lable">
+                    Login | <a href="/signup">Registrieren</a>
+                </div>
+                {%if not error == None%}
+                <p class="error">{{error}}</p>
+                {%endif%}
+                <input type="text" placeholder="Benutzername" name="username" />
+                <div class="break"></div>
+                <input type="password" placeholder="Passwort" name="passwd" />
+                <div class="break"></div>
+                <button type="submit">Login!</button>
+                <button type="button">Ohne Login!</button>
+            </form>
+        </div>
+    </body>
+</html>

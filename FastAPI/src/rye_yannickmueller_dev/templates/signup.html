@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Registrieren</title>
+        <meta name="author" content="Yannick Müller" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link href="/static/style.css" rel="stylesheet" />
+        <link
+            rel="icon"
+            type="image/x-icon"
+            href="/static/yannickmueller.ico"
+        />
+    </head>
+
+    <body>
+        <div id="Container">
+            <form class="form" action="" method="POST">
+                <div id="login-lable">
+                    Registrieren | <a href="/login">Login</a>
+                </div>
+                {%if not error == None%}
+                <p class="error">{{error}}</p>
+                {%endif%}
+                <input
+                    type="text"
+                    placeholder="Vorname *"
+                    name="fname"
+                    required
+                />
+                <div class="break"></div>
+                <input
+                    type="text"
+                    placeholder="Nachname *"
+                    name="lname"
+                    required
+                />
+                <div class="break"></div>
+                <input
+                    type="email"
+                    placeholder="Email *"
+                    name="email"
+                    required
+                />
+                <div class="break"></div>
+                <input type="tel" placeholder="Telefon" name="phone" />
+                <div class="break"></div>
+                <input
+                    type="text"
+                    placeholder="Benutzername *"
+                    name="username"
+                    required
+                />
+                <div class="break"></div>
+                <input
+                    type="password"
+                    placeholder="Passwort *"
+                    name="passwd"
+                    required
+                />
+                <div class="break"></div>
+                <input
+                    type="password"
+                    placeholder="Passwort wiederholen ... *"
+                    name="chpasswd"
+                    required
+                />
+                <div class="break"></div>
+                <img src="/static/captchas/{{salt}}.jpg" class="captcha" />
+                <div class="break"></div>
+                <input
+                    type="text"
+                    placeholder="Captcha eingeben *"
+                    name="captcha"
+                    required
+                />
+                <div class="break"></div>
+                <button type="submit">Registrieren!</button>
+            </form>
+        </div>
+    </body>
+</html>
