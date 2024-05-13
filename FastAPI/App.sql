@@ -17,7 +17,7 @@ CREATE TABLE Login (
     email VARCHAR(50) NOT NULL,
     phone VARCHAR(17),
     password VARCHAR(250) NOT NULL,
-    salt VARCHAR(4) NOT NULL,
+    salt VARCHAR(8) NOT NULL,
     PRIMARY KEY(id_User)
 )ENGINE = InnoDB;
 
@@ -30,4 +30,3 @@ CREATE TABLE ToDo (
     PRIMARY KEY(id_ToDo),
     FOREIGN KEY(fk_User) REFERENCES Login(id_User)
 )ENGINE = InnoDB;
-

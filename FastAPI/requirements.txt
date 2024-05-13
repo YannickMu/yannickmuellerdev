@@ -16,6 +16,8 @@ captcha==0.5.0
     # via rye-yannickmueller-dev
 click==8.1.7
     # via uvicorn
+exceptiongroup==1.2.1
+    # via anyio
 fastapi==0.110.0
     # via rye-yannickmueller-dev
 gunicorn==21.2.0
@@ -55,9 +57,13 @@ starlette==0.36.3
 starlette-context==0.3.6
     # via rye-yannickmueller-dev
 typing-extensions==4.10.0
+    # via annotated-types
+    # via anyio
     # via fastapi
     # via pydantic
     # via pydantic-core
+    # via starlette
+    # via uvicorn
 uvicorn==0.27.1
     # via rye-yannickmueller-dev
     # via uvicorn

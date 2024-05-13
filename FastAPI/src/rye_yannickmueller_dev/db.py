@@ -1,13 +1,12 @@
 """Module for login page"""
 
+import os
 import hashlib
 import secrets
 import mariadb
 from mariadb.constants.INDICATOR import NULL
 from mariadb.constants.INFO import ERROR
 from fastapi.responses import HTMLResponse, RedirectResponse
-from capt import generate
-from __init__ import templates as html
 
 
 # Autor: Yannick Müller
@@ -17,46 +16,58 @@ class Signup:
     """
     In this class are the functions for the Signup process.
     """
-    async def post(self, request, username, fname, lname, email, phone, passwd, chpasswd, salt, captcha):
-        if not passwd == None and passwd == chpasswd and salt == captcha:
+    async def signup(self, username, fname, lname, email, phone, password, chpassword, salt, captcha):
+        if salt == captcha:
+            os.remove(f'./static/captchas/{salt}.jpg')
             if phone == None:
                 phone = 'NULL'
-            passwd = hashlib.sha512(b"{{passwd}}{{salt}}").hexdigest()
             try:
                 conn = mariadb.connect(
                     host="172.15.15.3", port=3306, user="README", password="README"
                 )
                 cur = conn.cursor()
                 cur.execute(
-                    f"""INSERT INTO App.Login (username, fname, lname, email, phone, password, salt) 
-                    VALUES ('{username}', '{fname}', '{lname}', '{email}', '{phone}','{passwd}', '{salt}')"""
+                    f"""INSERT INTO App.Login (username, fname, lname, email, phone, password, salt)
+                    VALUES ('{username}', '{fname}', '{lname}', '{email}', '{phone}','{password}', '{salt}')"""
                 )
                 conn.commit()
                 conn.close()
-                return RedirectResponse("/login", status_code=307)
+                return 'true'
             except Exception as e:
                 return f"Error: {e}"
         else:
-            error = 1
-            salt = secrets.token_hex(2)
-            await generate(salt)
-            return html.TemplateResponse(
-                request=request, name="signup.html", context={"error": error, "salt": salt}
-            )
+            return "false"
 
 
 class Login:
-    async def post(self, username, password):
+    async def get(self, username, password):
         try:
             conn = mariadb.connect(
                 host="172.15.15.3", port=3306, user="README", password="README"
             )
             cur = conn.cursor()
+            cur.execute("USE App;")
             cur.execute(
-                f"USE App; SELECT username FROM Login WHERE password = {password} AND username = {username};<"
+                f"SELECT username FROM Login WHERE password = '{password}' AND username = '{username}'"
             )
+            out = cur.fetchall()
             conn.commit()
             conn.close()
-            return RedirectResponse("/login", status_code=307)
+            return out
         except Exception as e:
             return f"Error: {e}"
+class GetSalt:
+    async def gets(self, username):
+        try:
+            conn = mariadb.connect(
+                host="172.15.15.3", port=3306, user="README", password="README"
+            )
+            cur = conn.cursor()
+            cur.execute("USE App;")
+            cur.execute(f"SELECT salt FROM Login WHERE username = '{username}'")
+            salt = cur.fetchall()[0][0]
+            conn.commit()
+            conn.close()
+        except Exception as e:
+            return f"Error: {e}"
+        return salt

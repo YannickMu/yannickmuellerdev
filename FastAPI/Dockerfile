@@ -1,7 +1,8 @@
 FROM debian:latest AS init
 
-EXPOSE 8080
+EXPOSE 8099
 
+LABEL author="Yannick Müller"
 LABEL maintainer="info@yannickmueller.dev"
 
 WORKDIR /
@@ -10,14 +11,10 @@ RUN mkdir app
 FROM init AS apt
 RUN echo Started at $(date)...
 RUN apt update
-RUN apt upgrade
-RUN apt install python3-full python3-pip python3-dev gcc openssl libmariadb3 libmariadb-dev cron -y
+RUN yes | apt upgrade
+RUN apt install python3-full python3-pip python3-dev gcc openssl libmariadb3 libmariadb-dev -y
 
 FROM apt AS script
-RUN /bin/bash -c crontab -l > mycron
-RUN /bin/bash -c echo "*/5 * * * *   find /app/src/rye_yannickmueller_dev/static/captchas -mmin +59 -type f -exec rm -fv {} \;" >> mycron
-RUN /bin/bash -c crontab mycron
-RUN rm mycron
 RUN touch serve
 RUN echo "#!/bin/bash" > serve
 RUN echo "cd /app" >> serve
