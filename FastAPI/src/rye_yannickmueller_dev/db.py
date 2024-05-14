@@ -18,7 +18,6 @@ class Signup:
     """
     async def signup(self, username, fname, lname, email, phone, password, chpassword, salt, captcha):
         if salt == captcha:
-            os.remove(f'./static/captchas/{salt}.jpg')
             if phone == None:
                 phone = 'NULL'
             try:

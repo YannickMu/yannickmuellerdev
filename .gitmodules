@@ -1,3 +1,4 @@
 [submodule "yannickmuellerdev-angular"]
 	path = yannickmuellerdev-angular
 	url = https://gitlab.com/yannickmueller/yannickmuellerdev-angular.git
+	url = https://github.com/YannickMu/angular-yannickmuellerdev.git
