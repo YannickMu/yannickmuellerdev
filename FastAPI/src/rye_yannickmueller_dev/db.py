@@ -18,17 +18,24 @@ class Signup:
     """
     async def signup(self, username, fname, lname, email, phone, password, chpassword, salt, captcha):
         if salt == captcha:
-            if phone == None:
+            if phone == "":
                 phone = 'NULL'
             try:
                 conn = mariadb.connect(
                     host="172.15.15.3", port=3306, user="README", password="README"
                 )
                 cur = conn.cursor()
-                cur.execute(
-                    f"""INSERT INTO App.Login (username, fname, lname, email, phone, password, salt)
-                    VALUES ('{username}', '{fname}', '{lname}', '{email}', '{phone}','{password}', '{salt}')"""
-                )
+                cur.execute("USE App;")
+                if phone == "NULL":
+                    cur.execute(
+                        f"""INSERT INTO Login (username, fname, lname, email, phone, password, salt)
+                        VALUES ('{username}', '{fname}', '{lname}', '{email}', '{phone}','{password}', '{salt}')"""
+                    )
+                else:
+                    cur.execute(
+                        f"""INSERT INTO Login (username, fname, lname, email, phone, password, salt)
+                        VALUES ('{username}', '{fname}', '{lname}', '{email}', '{phone}','{password}', '{salt}')"""
+                    )
                 conn.commit()
                 conn.close()
                 return 'true'
